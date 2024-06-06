@@ -18,10 +18,10 @@ export const AssetItem = async ({ asset }: { asset: Amount }) => {
 	return (
 		<Link
 			href={''}
-			className="flex flex-col gap-4 hover:border-b border-primary"
+			className="flex flex-col gap-4 hover:border-b border-primary items-center"
 		>
 			<AssetImage src={data.onchain_metadata.image} />
-			<div className="flex justify-between">
+			<div className="flex justify-between max-w-[420px] w-full items-center">
 				<div className="text-lg text-primary font-semibold">
 					{data.onchain_metadata.name}
 				</div>

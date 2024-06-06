@@ -31,7 +31,7 @@ export default async function Home() {
 				Assets
 			</div>
 			{data && (
-				<div className="grid grid-cols-3 gap-6">
+				<div className="grid lg:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-6">
 					{data.amount
 						.filter(item => item.unit !== 'lovelace')
 						.map(item => (

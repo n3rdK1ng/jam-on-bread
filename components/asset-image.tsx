@@ -22,7 +22,7 @@ export const AssetImage = ({ src }: { src: string }) => {
 					onError={() => setError(true)}
 				/>
 			) : (
-				<div className="rounded-lg hover:border border-primary bg-primary/10 w-full h-full grid items-center justify-center text-5xl">
+				<div className="rounded-lg hover:border border-primary bg-primary/10 w-full aspect-square max-w-[420px] grid items-center justify-center text-5xl">
 					⚠️
 				</div>
 			)}

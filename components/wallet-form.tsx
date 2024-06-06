@@ -47,17 +47,20 @@ export const WalletForm = () => {
 
 	return (
 		<Form {...form}>
-			<form onSubmit={form.handleSubmit(onSubmit)} className="w-2/3 space-y-6">
+			<form
+				onSubmit={form.handleSubmit(onSubmit)}
+				className="sm:w-2/3 w-full items-center flex flex-col sm:items-start space-y-6"
+			>
 				<FormField
 					control={form.control}
 					name="wallet"
 					render={({ field }) => (
-						<FormItem>
+						<FormItem className="w-full">
 							<FormLabel>Wallet</FormLabel>
 							<FormControl>
 								<Input placeholder="addr1vpu5vlrf4xkx..." {...field} />
 							</FormControl>
-							<FormDescription>
+							<FormDescription className="text-center sm:text-left">
 								This is your chosen payment address.
 							</FormDescription>
 							<FormMessage />
