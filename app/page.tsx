@@ -1,11 +1,11 @@
-import axios from 'axios'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 
 import { AssetItem } from '#/components/asset-item'
 import { ModeToggle } from '#/components/mode-toggle'
 import { WalletButton } from '#/components/wallet-button'
-import { AddressInfo } from '#/utils/types'
+import { blockfrost } from '#/utils/api'
+import { AddressInfo } from '#/utils/api/types'
 
 export default async function Home() {
 	const walletCookie = cookies().get('wallet')
@@ -14,13 +14,8 @@ export default async function Home() {
 		redirect('/auth')
 	}
 
-	const { data }: { data: AddressInfo } = await axios.get(
-		process.env.BLOCKFROST_API_URL + `/addresses/${walletCookie.value}`,
-		{
-			headers: {
-				project_id: process.env.BLOCKFROST_API_KEY,
-			},
-		},
+	const { data }: { data: AddressInfo } = await blockfrost.get(
+		'/addresses/' + walletCookie.value,
 	)
 
 	return (

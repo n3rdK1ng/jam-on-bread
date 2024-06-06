@@ -1,20 +1,14 @@
-import axios from 'axios'
 import { addHours } from 'date-fns'
 import { cookies } from 'next/headers'
 import { type NextRequest } from 'next/server'
+
+import { blockfrost } from '#/utils/api'
 
 export const GET = async (request: NextRequest) => {
 	const searchParams = request.nextUrl.searchParams
 	const walletParam = searchParams.get('wallet') as string
 
-	await axios.get(
-		process.env.BLOCKFROST_API_URL + `/addresses/${walletParam}`,
-		{
-			headers: {
-				project_id: process.env.BLOCKFROST_API_KEY,
-			},
-		},
-	)
+	await blockfrost.get('/addresses/' + walletParam)
 
 	cookies().set('wallet', walletParam, {
 		httpOnly: true,
