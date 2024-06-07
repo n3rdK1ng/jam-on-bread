@@ -21,6 +21,6 @@ export type AssetInfo = {
 	mint_or_burn_count: number
 	onchain_metadata: any
 	onchain_metadata_standard: string
-	onchain_metadata_extra: null
-	metadata: null
+	onchain_metadata_extra: any
+	metadata: any
 }
