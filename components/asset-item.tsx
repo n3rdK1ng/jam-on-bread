@@ -1,18 +1,13 @@
-import axios from 'axios'
 import Link from 'next/link'
 
-import { Amount, AssetInfo } from '#/utils/types'
+import { blockfrost } from '#/utils/api'
+import { Amount, AssetInfo } from '#/utils/api/types'
 
 import { AssetImage } from './asset-image'
 
 export const AssetItem = async ({ asset }: { asset: Amount }) => {
-	const { data }: { data: AssetInfo } = await axios.get(
-		process.env.BLOCKFROST_API_URL + `/assets/${asset.unit}`,
-		{
-			headers: {
-				project_id: process.env.BLOCKFROST_API_KEY,
-			},
-		},
+	const { data }: { data: AssetInfo } = await blockfrost.get(
+		'/assets/' + asset.unit,
 	)
 
 	return (
