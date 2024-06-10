@@ -4,6 +4,7 @@ import Image from 'next/image'
 import { useState } from 'react'
 
 import { AssetInfo } from '#/utils/api/types'
+import { getAssetName } from '#/utils/misc'
 
 import {
 	Dialog,
@@ -17,34 +18,47 @@ import {
 export const AssetDetail = ({ asset }: { asset: AssetInfo }) => {
 	const [error, setError] = useState(false)
 
+	let imageSrc = '/error.png'
+	let altText = 'Error Image'
+
+	if (!error) {
+		if (
+			asset.onchain_metadata &&
+			typeof asset.onchain_metadata.image === 'string' &&
+			asset.onchain_metadata.image.includes('ipfs://')
+		) {
+			imageSrc = asset.onchain_metadata.image.replace(
+				'ipfs://',
+				'https://ipfs.io/ipfs/',
+			)
+			altText = 'Onchain Metadata Image'
+		} else if (asset.metadata && typeof asset.metadata.logo === 'string') {
+			imageSrc = `data:image/png;base64,${asset.metadata.logo}`
+			altText = 'Metadata Image'
+		}
+	}
+
 	return (
 		<Dialog>
 			<DialogTrigger className="w-full">
-				{!error ? (
+				{imageSrc === '/error.png' || error ? (
+					<div className="rounded-lg hover:border border-primary bg-primary/10 w-full aspect-square max-w-[420px] grid items-center justify-center text-5xl">
+						⚠️
+					</div>
+				) : (
 					<Image
-						src={
-							typeof asset.onchain_metadata.image === 'string'
-								? asset.onchain_metadata.image.replace(
-										'ipfs://',
-										'https://ipfs.io/ipfs/',
-									)
-								: '/error.png'
-						}
-						alt="Onchain Metadata Image"
+						src={imageSrc}
+						alt={altText}
 						width={420}
 						height={420}
 						className="rounded-lg hover:border border-primary"
 						onError={() => setError(true)}
 					/>
-				) : (
-					<div className="rounded-lg hover:border border-primary bg-primary/10 w-full aspect-square max-w-[420px] grid items-center justify-center text-5xl">
-						⚠️
-					</div>
 				)}
 			</DialogTrigger>
 			<DialogContent>
 				<DialogHeader>
-					<DialogTitle>{asset.onchain_metadata.name}</DialogTitle>
+					<DialogTitle>{getAssetName(asset)}</DialogTitle>
 					<DialogDescription>
 						<div className="flex gap-2">
 							<b>Asset:</b>
@@ -64,10 +78,28 @@ export const AssetDetail = ({ asset }: { asset: AssetInfo }) => {
 						</div>
 					</DialogDescription>
 				</DialogHeader>
-				<div>Metadata:</div>
-				<pre className="text-xs lg:text-sm overflow-x-auto">
-					<code>{JSON.stringify(asset.onchain_metadata, null, 2)}</code>
-				</pre>
+				{asset.onchain_metadata && (
+					<>
+						<div>Onchain Metadata:</div>
+						<pre className="text-xs lg:text-sm overflow-x-auto">
+							<code>{JSON.stringify(asset.onchain_metadata, null, 2)}</code>
+						</pre>
+					</>
+				)}
+				{asset.metadata && (
+					<>
+						<div>Metadata:</div>
+						<pre className="text-xs lg:text-sm overflow-x-auto">
+							<code>
+								{JSON.stringify(
+									asset.metadata,
+									(key, value) => (key === 'logo' ? undefined : value),
+									2,
+								)}
+							</code>
+						</pre>
+					</>
+				)}
 			</DialogContent>
 		</Dialog>
 	)
