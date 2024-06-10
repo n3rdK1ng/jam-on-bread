@@ -1,5 +1,6 @@
 import { blockfrost } from '#/utils/api'
 import { Amount, AssetInfo } from '#/utils/api/types'
+import { getAssetName } from '#/utils/misc'
 
 import { AssetDetail } from './asset-detail'
 
@@ -13,7 +14,7 @@ export const AssetItem = async ({ asset }: { asset: Amount }) => {
 			<AssetDetail asset={data} />
 			<div className="flex justify-between max-w-[420px] w-full items-center">
 				<div className="text-lg text-primary font-semibold">
-					{data.onchain_metadata.name}
+					{getAssetName(data)}
 				</div>
 				<div className="text-primary/90">{asset.quantity}</div>
 			</div>
